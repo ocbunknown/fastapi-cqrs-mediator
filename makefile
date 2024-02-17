@@ -35,13 +35,13 @@ alembic_downgrade: ## Rollback Alembic migrations
 	alembic downgrade -1
 
 .PHONY: lint
-lint:  ## Ruff check
+ruff:  ## Ruff check
 	poetry run ruff .
 
 .PHONY: mypy
 mypy: ## mypy checl
-	poetry run mypy .
+	poetry run mypy . --explicit-package-bases
 
 .PHONY: uvicorn
-uvicorn: ## run your app
-	uvicorn --factory src.main:create_app
+uvicorn: ## run your FastAPI app
+	uvicorn --factory src.app.main:create_app
