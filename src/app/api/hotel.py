@@ -14,4 +14,3 @@ async def get_user(
     gateway: Annotated[DatabaseGateway, Depends(TransactionGatewayMarker)],
 ) -> UserDTO:
     return await gateway.user().reader().select(user_id=1)
-=
