@@ -29,7 +29,9 @@ if TYPE_CHECKING:
 ModelType = TypeVar("ModelType", bound=Base)
 
 
-class SQLAlchemyCRUDRepository(AbstractCRUDRepository[ModelType, ColumnExpressionArgument[bool]]):
+class SQLAlchemyCRUDRepository(
+    AbstractCRUDRepository[ModelType, ColumnExpressionArgument[bool]]
+):
     """Repository class for CRUD (Create, Read, Update, Delete) operations using SQLAlchemy with asynchronous support.
 
     Args:
@@ -72,7 +74,9 @@ class SQLAlchemyCRUDRepository(AbstractCRUDRepository[ModelType, ColumnExpressio
         stmt = insert(self.model).values(**values).returning(self.model)
         return (await self._session.execute(stmt)).scalars().first()
 
-    async def create_many(self, data: Sequence[Mapping[str, Any]]) -> Sequence[ModelType]:
+    async def create_many(
+        self, data: Sequence[Mapping[str, Any]]
+    ) -> Sequence[ModelType]:
         """Create multiple entries in the data storage using the provided data.
 
         Args:
@@ -128,7 +132,9 @@ class SQLAlchemyCRUDRepository(AbstractCRUDRepository[ModelType, ColumnExpressio
         stmt = select(self.model).where(*clauses).offset(offset).limit(limit)
         return (await self._session.execute(stmt)).scalars().all()
 
-    async def update(self, *clauses: ColumnExpressionArgument[bool], **values: Any) -> Sequence[ModelType]:
+    async def update(
+        self, *clauses: ColumnExpressionArgument[bool], **values: Any
+    ) -> Sequence[ModelType]:
         """Update one or more entries in the data storage based on the provided clauses and values.
 
         Args:
@@ -158,7 +164,9 @@ class SQLAlchemyCRUDRepository(AbstractCRUDRepository[ModelType, ColumnExpressio
         """
         return await self._session.execute(update(self.model), data)
 
-    async def delete(self, *clauses: ColumnExpressionArgument[bool]) -> Sequence[ModelType]:
+    async def delete(
+        self, *clauses: ColumnExpressionArgument[bool]
+    ) -> Sequence[ModelType]:
         """Delete one or more entries from the data storage based on the provided clauses.
 
         Args:
@@ -203,6 +211,7 @@ class SQLAlchemyCRUDRepository(AbstractCRUDRepository[ModelType, ColumnExpressio
         stmt = select(func.count()).where(*clauses).select_from(self.model)
         return cast(int, await self._session.scalar(stmt))
 
-    def with_query_model(self, model: type[ModelType]) -> SQLAlchemyCRUDRepository[ModelType]:
+    def with_query_model(
+        self, model: type[ModelType]
+    ) -> SQLAlchemyCRUDRepository[ModelType]:
         return SQLAlchemyCRUDRepository(self._session, model)
-

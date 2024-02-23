@@ -28,7 +28,7 @@ class AbstractCRUDRepository(Repository, Generic[EntryType, ColumnType]):
     ----------
         model (Type[EntryType]): The model type that the repository operates on.
 
-    """ 
+    """
 
     model: Type[EntryType]
 

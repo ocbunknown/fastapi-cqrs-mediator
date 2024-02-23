@@ -15,6 +15,10 @@ sqlalchemy = {extras = ["asyncio"], version = "^2.0.27"}
 asyncpg = "^0.29.0"
 pydantic-settings = "^2.1.0"
 alembic = "^1.13.1"
+psycopg2-binary = "^2.9.9"
+nest-asyncio = "^1.6.0"
+black = "^24.2.0"
+logging = "^0.4.9.6"
 
 [tool.ruff]
 fix = true

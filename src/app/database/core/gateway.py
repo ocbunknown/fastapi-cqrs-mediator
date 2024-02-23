@@ -1,10 +1,10 @@
 from types import TracebackType
-from typing import Optional, Type, TypeVar
+from typing import Optional, Type
+
+from typing_extensions import Self
 
 from src.app.database.core.uow import SQLAlchemyUnitOfWork
-# from src.app.database.repositories import UserRepository
-
-Self = TypeVar("Self", bound="DatabaseGateway")
+from src.app.database.repositories.user import UserRepository
 
 
 class DatabaseGateway:
@@ -25,8 +25,8 @@ class DatabaseGateway:
     ) -> None:
         await self.uow.__aexit__(exc_type, exc_value, traceback)
 
-    # def user(self) -> UserRepository:
-    #     return UserRepository(self.uow.session)
+    def user(self) -> UserRepository:
+        return UserRepository(self.uow.session)
 
 
 def database_gateway_factory(unit_of_work: SQLAlchemyUnitOfWork) -> DatabaseGateway:

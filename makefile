@@ -34,6 +34,10 @@ alembic_upgrade: ## Run Alembic migrations
 alembic_downgrade: ## Rollback Alembic migrations
 	alembic downgrade -1
 
+.PHONY: generate
+generate:
+	alembic revision --autogenerate -m "$(NAME)"
+
 .PHONY: lint
 ruff:  ## Ruff check
 	poetry run ruff .
