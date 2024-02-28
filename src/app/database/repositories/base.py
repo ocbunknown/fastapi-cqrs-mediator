@@ -38,7 +38,7 @@ class BaseRepository(Repository, Generic[ModelType]):
 
         """
         self._session = session
-        self._crud = SQLAlchemyCRUDRepository(session, self.model)
+        self.crud = SQLAlchemyCRUDRepository(session, self.model)
 
 
 class BaseInteractor(Generic[ModelType]):

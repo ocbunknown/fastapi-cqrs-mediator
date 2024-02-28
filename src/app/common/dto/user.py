@@ -1,12 +1,14 @@
 from pydantic import BaseModel
 
 
-class UserDTO(BaseModel):
+class User(BaseModel):
     email: str
     hashed_password: str
 
-class UserUpdate(UserDTO):
+
+class UserUpdate(User):
     ...
 
-class UserCreate(UserDTO):
+
+class UserCreate(User):
     ...

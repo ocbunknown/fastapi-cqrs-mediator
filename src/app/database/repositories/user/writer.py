@@ -12,12 +12,12 @@ class UserWriter(BaseInteractor[models.User]):
     __slots__ = ()
 
     async def create(self, query: dto.UserCreate) -> Optional[models.User]:
-        return await self.repository._crud.create(**query.model_dump())
+        return await self.repository.crud.create(**query.model_dump())
 
     async def update(
         self, user_id: int, query: dto.UserUpdate
     ) -> Optional[models.User]:
-        result = await self.repository._crud.update(
+        result = await self.repository.crud.update(
             self.repository.model.id == user_id, **query.model_dump(exclude_none=True)
         )
         return result[0] if result else None

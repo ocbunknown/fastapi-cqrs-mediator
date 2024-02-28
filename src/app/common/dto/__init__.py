@@ -1,9 +1,9 @@
 __all__ = (
-    "UserDTO",
-    "HotelDTO",
+    "User",
+    "Hotel",
     "UserCreate",
     "UserUpdate",
 )
 
-from src.app.common.dto.hotel import HotelDTO
-from src.app.common.dto.user import UserCreate, UserDTO, UserUpdate
+from src.app.common.dto.hotel import Hotel
+from src.app.common.dto.user import User, UserCreate, UserUpdate
