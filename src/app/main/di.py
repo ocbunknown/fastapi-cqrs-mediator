@@ -1,12 +1,20 @@
-from functools import partial
+from typing import Callable, TypeVar
 
 from fastapi import FastAPI
 
-from src.app.common.markers import SessionGatewayMarker, TransactionGatewayMarker
 from src.app.core.config import load_settings
-from src.app.database import session_gateway
 from src.app.database.core.connection import create_sa_engine, create_sa_session_factory
-from src.app.services.gateway import service_gateway_factory
+from src.app.handlers.queries import build_query_mediator
+from src.app.handlers.queries.mediator import QueryMediator
+
+DependencyType = TypeVar("DependencyType")
+
+
+def singleton(dependency: DependencyType) -> Callable[[], DependencyType]:
+    def singleton_factory() -> DependencyType:
+        return dependency
+
+    return singleton_factory
 
 
 def init_dependencies(app: FastAPI) -> None:
@@ -14,9 +22,7 @@ def init_dependencies(app: FastAPI) -> None:
     engine = create_sa_engine(settings.db.url)
     session_factory = create_sa_session_factory(engine)
 
-    app.dependency_overrides[TransactionGatewayMarker] = partial(
-        service_gateway_factory, session_factory
-    )
-    app.dependency_overrides[SessionGatewayMarker] = partial(
-        session_gateway, session_factory
-    )
+    query_mediator = QueryMediator()
+    build_query_mediator(query_mediator, session_factory)
+
+    app.dependency_overrides[QueryMediator] = singleton(query_mediator)

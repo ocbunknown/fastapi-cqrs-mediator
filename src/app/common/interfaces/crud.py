@@ -58,7 +58,9 @@ class AbstractCRUDRepository(Repository, Generic[EntryType, ColumnType]):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def create_many(self, data: Sequence[Mapping[str, Any]]) -> Sequence[EntryType]:
+    async def create_many(
+        self, data: Sequence[Mapping[str, Any]]
+    ) -> Sequence[EntryType]:
         """Create multiple entries in the data storage using the provided data.
 
         Args:
@@ -113,7 +115,9 @@ class AbstractCRUDRepository(Repository, Generic[EntryType, ColumnType]):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def update(self, *clauses: ColumnType, **values: Mapping[str, Any]) -> Sequence[EntryType]:
+    async def update(
+        self, *clauses: ColumnType, **values: Mapping[str, Any]
+    ) -> Sequence[EntryType]:
         """Update one or more entries in the data storage based on the provided clauses and values.
 
         Args:

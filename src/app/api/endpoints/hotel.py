@@ -2,10 +2,9 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from src.app.api.responses import OkResponse
 from src.app.common import dto
-from src.app.common.markers import TransactionGatewayMarker
-from src.app.services.gateway import ServiceGateway
+from src.app.core.depends_stub import Stub
+from src.app.handlers.queries import GetUserQuery, QueryMediator
 
 hotel_router = APIRouter(tags=["Find Hotel"])
 
@@ -16,7 +15,7 @@ hotel_router = APIRouter(tags=["Find Hotel"])
     response_model=dto.User,
 )
 async def get_user(
-    gateway: Annotated[ServiceGateway, Depends(TransactionGatewayMarker)],
-) -> OkResponse[dto.User]:
-    result = await gateway.user().select_user(user_id=1)
-    return OkResponse(result, status_code=status.HTTP_200_OK)
+    user_id: int,
+    mediator: Annotated[QueryMediator, Depends(Stub(QueryMediator))],
+) -> dto.User:
+    return await mediator(GetUserQuery(user_id=user_id))

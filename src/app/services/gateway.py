@@ -1,7 +1,6 @@
 from types import TracebackType
 from typing import Optional, Type
 
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from typing_extensions import Self
 
 from src.app.database import (
@@ -9,6 +8,7 @@ from src.app.database import (
     database_gateway_factory,
     sa_unit_of_work_factory,
 )
+from src.app.database.core.connection import SessionFactoryType
 from src.app.services.user import UserService
 
 
@@ -35,8 +35,7 @@ class ServiceGateway:
 
 
 def service_gateway_factory(
-    session_factory: async_sessionmaker[AsyncSession],
+    session_factory: SessionFactoryType,
 ) -> ServiceGateway:
     session = session_factory()
-    gateway = database_gateway_factory(sa_unit_of_work_factory(session))
-    return ServiceGateway(gateway)
+    return ServiceGateway(database_gateway_factory(sa_unit_of_work_factory(session)))

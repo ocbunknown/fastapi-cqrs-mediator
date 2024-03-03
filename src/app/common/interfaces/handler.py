@@ -19,7 +19,7 @@ class Handler(Protocol):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def handler(self, query: Any) -> Any:
+    async def handle(self, query: Any) -> Any:
         """Handle the query asynchronously and return the result.
 
         Args:

@@ -12,3 +12,7 @@ class UserUpdate(User):
 
 class UserCreate(User):
     ...
+
+
+class FindById(BaseModel):
+    id: int

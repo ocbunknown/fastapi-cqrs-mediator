@@ -13,8 +13,9 @@ class Base(DeclarativeBase):
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
 
-
     def as_dict(self) -> dict[str, Any]:
         return {
-            attr: value for attr, value in self.__dict__.items() if not attr.startswith("_")
+            attr: value
+            for attr, value in self.__dict__.items()
+            if not attr.startswith("_")
         }

@@ -49,9 +49,7 @@ class Settings(BaseSettings):
 
     @classmethod
     def path(
-        cls: Type["Settings"],
-        *paths: _StrPath,
-        base_path: Optional[_StrPath] = None
+        cls: Type["Settings"], *paths: _StrPath, base_path: Optional[_StrPath] = None
     ) -> _StrPath:
         if base_path is None:
             base_path = cls.root_dir()

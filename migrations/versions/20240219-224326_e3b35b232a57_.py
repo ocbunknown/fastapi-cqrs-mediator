@@ -83,9 +83,7 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
     with op.batch_alter_table("booking", schema=None) as batch_op:
-        batch_op.create_index(
-            batch_op.f("ix_booking_id"), ["id"], unique=False
-        )
+        batch_op.create_index(batch_op.f("ix_booking_id"), ["id"], unique=False)
 
     # ### end Alembic commands ###
 

@@ -9,7 +9,7 @@ RT = TypeVar("RT")
 
 
 class Mediator(abc.ABC):
-    def init(self) -> None:
+    def __init__(self) -> None:
         """Initialize the Mediator object by setting up dependencies dictionary."""
         self._dependencies = {}
 

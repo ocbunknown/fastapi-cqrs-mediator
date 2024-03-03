@@ -1,14 +1,16 @@
+import abc
 from typing import Generic, TypeVar
 
 from src.app.common.interfaces.handler import Handler
 
-RequestType = TypeVar("RequestType")
-DTOType = TypeVar("DTOType")
+QueryType = TypeVar("QueryType")
+ResultType = TypeVar("ResultType")
 
 
-class BaseHandler(Handler, Generic[RequestType, DTOType]):
-    async def __call__(self, query: RequestType) -> DTOType:
-        return await self.handler(query)
-    
-    async def handler(self, query: RequestType) -> DTOType:
-        ...
+class BaseHandler(Handler, Generic[QueryType, ResultType]):
+    async def __call__(self, query: QueryType) -> ResultType:
+        return await self.handle(query)
+
+    @abc.abstractmethod
+    async def handle(self, query: QueryType) -> ResultType:
+        raise NotImplementedError
