@@ -1,12 +1,21 @@
-from typing import Generic, Mapping, Optional, TypeVar
+from typing import Any, Generic, Mapping, Optional, TypeVar
 
-from fastapi.responses import Response
+from fastapi.responses import ORJSONResponse as _ORJSONResponse
 from starlette.background import BackgroundTask
+
+from src.app.common.serializers.orjson import orjson_dumps
 
 ResultType = TypeVar("ResultType")
 
 
-class OkResponse(Response, Generic[ResultType]):
+class ORJSONResponse(_ORJSONResponse):
+    def render(self, content: Any) -> bytes:
+        if isinstance(content, bytes):
+            return content
+        return orjson_dumps(content)
+
+
+class OkResponse(ORJSONResponse, Generic[ResultType]):
     def __init__(
         self,
         content: ResultType,

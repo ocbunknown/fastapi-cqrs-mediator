@@ -7,6 +7,7 @@ class User(BaseModel):
     hashed_password: str
 
 
+
 class UserUpdate(User):
     ...
 

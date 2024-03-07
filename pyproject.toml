@@ -20,6 +20,7 @@ nest-asyncio = "^1.6.0"
 black = "^24.2.0"
 logging = "^0.4.9.6"
 gunicorn = "^21.2.0"
+orjson = "^3.9.15"
 
 
 [tool.mypy]

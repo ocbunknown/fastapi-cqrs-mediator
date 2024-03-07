@@ -1,6 +1,6 @@
 from typing import cast
 
-from src.app.mediator.base import CT, RT, Mediator
+from src.app.handlers.mediator import CT, RT, Mediator
 
 
 class QueryMediator(Mediator):

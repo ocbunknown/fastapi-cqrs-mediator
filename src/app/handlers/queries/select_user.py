@@ -9,6 +9,7 @@ class GetUserQuery(BaseModel):
     user_id: int
 
 
+
 class GetUserHandler(BaseHandler[GetUserQuery, dto.User]):
     __slots__ = ("_gateway",)
 
@@ -16,5 +17,5 @@ class GetUserHandler(BaseHandler[GetUserQuery, dto.User]):
         self._gateway = gateway
 
     async def handle(self, query: GetUserQuery) -> dto.User:
-        async with self._gateway:
+        async with self._gateway.db_gateway.uow.session:
             return await self._gateway.user().select_user(**query.model_dump())
