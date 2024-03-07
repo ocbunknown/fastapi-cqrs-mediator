@@ -9,3 +9,4 @@ def create_app() -> FastAPI:
     init_routers(app)
     init_dependencies(app)
     return app
+

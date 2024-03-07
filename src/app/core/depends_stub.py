@@ -17,7 +17,7 @@ class Stub:
     `app.dependency_overrids[Interactor] = some_real_factory`
     """
 
-    def __init__(self, dependency: Callable[[Any], Any], **kwargs: Any) -> None:
+    def __init__(self, dependency: Callable[[], Any], **kwargs: Any) -> None:
         self._dependency = dependency
         self._kwargs = kwargs
 
