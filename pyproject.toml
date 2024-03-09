@@ -21,7 +21,11 @@ black = "^24.2.0"
 logging = "^0.4.9.6"
 gunicorn = "^21.2.0"
 orjson = "^3.9.15"
+passlib = "^1.7.4"
 
+[[tool.mypy.overrides]]
+module = "passlib.*"
+ignore_missing_imports = true
 
 [tool.mypy]
 strict = true
@@ -47,11 +51,13 @@ show_absolute_path = true
 disable_error_code = ["union-attr", "var-annotated"]
 exclude = "migrations"
 
+
 [tool.ruff]
 fix = true
 unsafe-fixes = true
 # line-length = 120 - if active, remove E501 from ignore
 lint.select = ["ALL"]
+
 lint.ignore = [
     "D1",
     "D203",
@@ -64,6 +70,8 @@ lint.ignore = [
     "ISC001",
     "E501",
     "ANN401",
+    "TRY003", # Exception error
+    "EM101",  # Exception error
 ]
 
 [tool.ruff.lint.isort]

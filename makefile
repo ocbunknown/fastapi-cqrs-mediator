@@ -45,6 +45,4 @@ mypy: ## mypy checl
 
 .PHONY: run
 run: ## Run backend
-	poetry run gunicorn --reload --bind $(HOST):$(BACKEND_PORT) \
-	--worker-class uvicorn.workers.UvicornWorker \
-	--workers $(WORKERS) --log-level $(LEVEL) src.app.main:create_app
+	uvicorn src.app.main:create_app --factory --reload

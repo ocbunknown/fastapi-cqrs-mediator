@@ -4,6 +4,8 @@ from fastapi import FastAPI
 
 from src.app.core.config import load_settings
 from src.app.database.core.connection import create_sa_engine, create_sa_session_factory
+from src.app.handlers.commands.mediator import CommandMediator
+from src.app.handlers.commands.setup import build_command_mediator
 from src.app.handlers.queries import build_query_mediator
 from src.app.handlers.queries.mediator import QueryMediator
 
@@ -23,6 +25,9 @@ def init_dependencies(app: FastAPI) -> None:
     session_factory = create_sa_session_factory(engine)
 
     query_mediator = QueryMediator()
+    command_mediator = CommandMediator()
     build_query_mediator(query_mediator, session_factory)
+    build_command_mediator(command_mediator, session_factory)
 
     app.dependency_overrides[QueryMediator] = singleton(query_mediator)
+    app.dependency_overrides[CommandMediator] = singleton(command_mediator)

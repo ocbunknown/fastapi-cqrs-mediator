@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+
+  postgres:
+    image: postgres:latest
+    container_name: database
+    restart: on-failure
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env
+    ports:
+      - '5433:5432'
+
+  service:
+    build: .
+    restart: always
+    container_name: service
+    volumes:
+      - ./:/app
+    command: sh -c "make alembic_upgrade && make run"
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:

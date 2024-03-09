@@ -18,7 +18,6 @@ class DatabaseSettings(BaseSettings):
         env_file_encoding="utf-8",
         case_sensitive=False,
         env_prefix="DB_",
-        extra="ignore",
     )
 
     uri: str
@@ -40,24 +39,8 @@ class DatabaseSettings(BaseSettings):
             self.name,
         )
 
-class Gunicorn(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        case_sensitive=False,
-        extra="ignore",
-    )
-
-    WORKERS: Optional[int] = None
-    LEVEL: Optional[str] = None
-    HOST: Optional[str] = None
-    BACKEND_PORT: Optional[int] = None
-    SECRET_KEY: Optional[str] = None
-    BACKEND_CORS_ORIGINS: Optional[list[str]] = []
-
-
 class Settings(BaseSettings):
     db: DatabaseSettings
-    gunicorn: Gunicorn
 
     @staticmethod
     def root_dir() -> Path:
@@ -73,12 +56,9 @@ class Settings(BaseSettings):
         return Path(base_path, *paths)
 
 
-
 def load_settings(
     database_settings: Optional[DatabaseSettings] = None,
-    gunicorn: Optional[Gunicorn] = None,
 ) -> Settings:
     return Settings(
         db=database_settings or DatabaseSettings(),  # type: ignore[call-arg]
-        gunicorn=gunicorn or Gunicorn(),
     )

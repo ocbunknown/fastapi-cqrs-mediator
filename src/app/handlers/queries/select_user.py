@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 from src.app.common import dto
@@ -6,8 +8,9 @@ from src.app.services.gateway import ServiceGateway
 
 
 class GetUserQuery(BaseModel):
-    user_id: int
-
+    user_id: Optional[int] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
 
 
 class GetUserHandler(BaseHandler[GetUserQuery, dto.User]):

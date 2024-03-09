@@ -1,11 +1,12 @@
-from pydantic import BaseModel
+from typing import Optional
+
+from src.app.common.dto.base import DTO
 
 
-class User(BaseModel):
-    id: int
-    email: str
+class User(DTO):
+    email: Optional[str]
+    phone: str
     hashed_password: str
-
 
 
 class UserUpdate(User):
