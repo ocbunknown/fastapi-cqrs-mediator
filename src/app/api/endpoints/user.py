@@ -6,8 +6,9 @@ from src.app.api.responses import OkResponse
 from src.app.common import dto
 from src.app.handlers.commands import CommandMediator
 from src.app.handlers.queries import GetUserQuery, QueryMediator
-
+from pydantic import BaseModel
 user_router = APIRouter(prefix="/v1/users", tags=["User"])
+
 
 
 @user_router.post(
@@ -18,14 +19,10 @@ user_router = APIRouter(prefix="/v1/users", tags=["User"])
 )
 async def create_user_endpoint(
     mediator: Annotated[CommandMediator, Depends()],
-    password: str,
-    phone: str,
-    email: Optional[str] = None,
+    body: dto.UserCreate,
 ) -> OkResponse[dto.User]:
     return OkResponse(
-        await mediator(
-            dto.UserCreate(email=email, hashed_password=password, phone=phone),
-        )
+        await mediator(body)
     )
 
 
