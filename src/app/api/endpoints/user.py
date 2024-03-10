@@ -1,4 +1,4 @@
-from typing import Annotated, Optional
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
@@ -6,9 +6,8 @@ from src.app.api.responses import OkResponse
 from src.app.common import dto
 from src.app.handlers.commands import CommandMediator
 from src.app.handlers.queries import GetUserQuery, QueryMediator
-from pydantic import BaseModel
-user_router = APIRouter(prefix="/v1/users", tags=["User"])
 
+user_router = APIRouter(prefix="/v1/users", tags=["User"])
 
 
 @user_router.post(
@@ -21,9 +20,7 @@ async def create_user_endpoint(
     mediator: Annotated[CommandMediator, Depends()],
     body: dto.UserCreate,
 ) -> OkResponse[dto.User]:
-    return OkResponse(
-        await mediator(body)
-    )
+    return OkResponse(await mediator(body))
 
 
 @user_router.get(
