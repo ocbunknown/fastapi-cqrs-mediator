@@ -26,11 +26,8 @@ class UserReader(BaseInteractor[models.User]):
             return await self.repository.crud.select(
                 self.repository.model.email == email
             )
-        if phone:
-            return await self.repository.crud.select(
-                self.repository.model.phone == phone
-            )
-        return None
+
+        return await self.repository.crud.select(self.repository.model.phone == phone)
 
     async def select_many(
         self, limit: Optional[int] = None, offset: Optional[int] = None

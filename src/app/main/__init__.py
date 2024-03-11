@@ -1,6 +1,6 @@
 __all__ = (
-    "create_app",
     "init_routers",
+    "create_app"
 )
 
 from src.app.main.routers import init_routers

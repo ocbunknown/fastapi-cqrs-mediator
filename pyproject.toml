@@ -5,11 +5,10 @@ description = ""
 authors = ["Psychotim <balduev.desco@mail.ru>"]
 readme = "README.md"
 
+
 [tool.poetry.dependencies]
 python = "^3.10"
 fastapi = "^0.109.2"
-ruff = "^0.2.1"
-mypy = "^1.8.0"
 uvicorn = "^0.27.1"
 sqlalchemy = { extras = ["asyncio"], version = "^2.0.27" }
 asyncpg = "^0.29.0"
@@ -17,15 +16,22 @@ pydantic-settings = "^2.1.0"
 alembic = "^1.13.1"
 psycopg2-binary = "^2.9.9"
 nest-asyncio = "^1.6.0"
-black = "^24.2.0"
-logging = "^0.4.9.6"
-gunicorn = "^21.2.0"
 orjson = "^3.9.15"
 passlib = "^1.7.4"
+gunicorn = "^21.2.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+logging = "^0.4.9.6"
+ruff = "^0.2.1"
+mypy = "^1.8.0"
+
 
 [[tool.mypy.overrides]]
 module = "passlib.*"
 ignore_missing_imports = true
+
 
 [tool.mypy]
 strict = true
@@ -57,7 +63,6 @@ fix = true
 unsafe-fixes = true
 # line-length = 120 - if active, remove E501 from ignore
 lint.select = ["ALL"]
-
 lint.ignore = [
     "D1",
     "D203",
@@ -74,13 +79,10 @@ lint.ignore = [
     "EM101",  # Exception error
 ]
 
-[tool.ruff.lint.isort]
-no-lines-before = ["standard-library", "local-folder"]
-known-third-party = []
-known-local-folder = ["whole_app"]
 
 [tool.ruff.lint.extend-per-file-ignores]
 "tests/*.py" = ["ANN401", "S101", "S311"]
+
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]

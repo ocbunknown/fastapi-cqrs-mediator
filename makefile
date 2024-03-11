@@ -35,14 +35,9 @@ alembic_downgrade: ## Rollback Alembic migrations
 generate:
 	alembic revision --autogenerate -m "$(NAME)"
 
-.PHONY: lint
-ruff:  ## Ruff check
-	poetry run ruff .
-
-.PHONY: mypy
-mypy: ## mypy checl
-	poetry run mypy . --explicit-package-bases
 
 .PHONY: run
 run: ## Run backend
-	uvicorn src.app.main:create_app --factory --reload
+	gunicorn -k uvicorn.workers.UvicornWorker \
+	--workers=$(WORKERS) --bind "$(HOST):$(PORT)" \
+	--log-level debug src.app.main:create_app

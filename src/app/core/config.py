@@ -28,6 +28,7 @@ class DatabaseSettings(BaseSettings):
     password: Optional[str] = None
     echo: Optional[bool] = False
     future: Optional[bool] = True
+    workers: Optional[int] = 4
 
     @property
     def url(self) -> str:

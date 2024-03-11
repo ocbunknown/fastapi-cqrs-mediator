@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   postgres:
     image: postgres:latest
     container_name: database
@@ -16,6 +15,8 @@ services:
       - .env
     ports:
       - '5433:5432'
+    networks:
+      - interconnect
 
   service:
     build: .
@@ -30,6 +31,25 @@ services:
       - .env
     depends_on:
       - postgres
+    networks:
+      - interconnect
+  
+  nginx:
+   image: nginx:stable
+   container_name: nginx
+   depends_on:
+    - service
+   ports:
+    - "3000:80"
+   volumes:
+    #  - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+     - ./nginx/configs:/etc/nginx/conf.d:ro
+   networks:
+     - interconnect
 
 volumes:
   postgres_data:
+
+networks:
+  interconnect:
+    driver: bridge
