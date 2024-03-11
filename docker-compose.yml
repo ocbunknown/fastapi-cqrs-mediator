@@ -42,7 +42,7 @@ services:
    ports:
     - "3000:80"
    volumes:
-    #  - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
      - ./nginx/configs:/etc/nginx/conf.d:ro
    networks:
      - interconnect
