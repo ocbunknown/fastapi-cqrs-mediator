@@ -1,30 +1,40 @@
-name: Main pipeline
+name: UserService
 
 on:
-  push:
-    branches: [ master ]
+  workflow_call:
+
   pull_request:
+    branches: [ master ]
+  push:
     branches: [ master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses:  actions/checkout@v3
-      - name: Install python
-        uses: actions/setup-python@v3
+      - uses: actions/checkout@v3
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.10.6
-      - name: Install deps
-        run: |
-          apt-get update -y
-          apt-get install make
-          python -m pip install --upgrade pip
-          pip install poetry
-          poetry install
-      - name: Run mypy
-        run: make mypy
-      - name: Run ruff
-        run: ruff .
-      
-
+          python-version: "3.10.6"
+          cache: "poetry"
+          cache-dependency-path: poetry.lock
+      - name: Install dependencies
+        run: poetry install --with lint
+  lint:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10.6"
+          cache: "poetry"
+          cache-dependency-path: poetry.lock
+      - name: Lint with pre-commit
+        run: poetry run mypy . --explicit-package-bases
