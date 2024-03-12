@@ -35,6 +35,9 @@ alembic_downgrade: ## Rollback Alembic migrations
 generate:
 	alembic revision --autogenerate -m "$(NAME)"
 
+.PHONY: mypy
+мypy:
+	mypy . --explicit-package-bases
 
 .PHONY: run
 run: ## Run backend
