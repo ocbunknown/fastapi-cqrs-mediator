@@ -23,7 +23,7 @@ gunicorn = "^21.2.0"
 black = "^24.2.0"
 logging = "^0.4.9.6"
 ruff = "^0.2.1"
-mypy = "^1.8.0"
+mypy = "^1.9.0"
 
 [[tool.mypy.overrides]]
 module = "passlib.*"
