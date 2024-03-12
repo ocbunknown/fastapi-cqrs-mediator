@@ -11,7 +11,7 @@ fastapi = "^0.109.2"
 uvicorn = "^0.27.1"
 sqlalchemy = { extras = ["asyncio"], version = "^2.0.28" }
 asyncpg = "^0.29.0"
-pydantic-settings = "^2.1.0"
+pydantic-settings = "^2.2.1"
 alembic = "^1.13.1"
 psycopg2-binary = "^2.9.9"
 nest-asyncio = "^1.6.0"
