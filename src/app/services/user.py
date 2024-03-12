@@ -52,5 +52,5 @@ class UserService(Service[UserRepository]):
 
         return convert_user_model_to_dto(result)
 
-    async def authenticate(self, query: dto.User) -> dto.User:
+    async def authenticate(self, query: dto.User) -> dto.User:  # type: ignore[empty-body]
         ...

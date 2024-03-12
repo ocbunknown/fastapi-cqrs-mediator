@@ -36,7 +36,7 @@ generate:
 	alembic revision --autogenerate -m "$(NAME)"
 
 .PHONY: mypy
-мypy:
+mypy:
 	mypy . --explicit-package-bases
 
 .PHONY: run

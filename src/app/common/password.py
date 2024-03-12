@@ -16,10 +16,10 @@ class PasswordHelper(PasswordHelperProtocol):
     def verify_and_update(
         self, plain_password: str, hashed_password: str
     ) -> tuple[bool, str]:
-        return self.context.verify_and_update(plain_password, hashed_password)  # type: ignore[no-any-return]
+        return self.context.verify_and_update(plain_password, hashed_password)  # type: ignore
 
     def hash(self, password: str) -> str:
-        return self.context.hash(password)  # type: ignore[no-any-return]
+        return self.context.hash(password)
 
     def generate(self) -> str:
-        return pwd.genword()  # type: ignore[no-any-return]
+        return pwd.genword()  # type: ignore
