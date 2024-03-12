@@ -162,4 +162,3 @@ cython_debug/
 .ruff_cache/
 
 test.py
-poetry.lock
