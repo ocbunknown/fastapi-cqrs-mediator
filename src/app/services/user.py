@@ -24,7 +24,7 @@ class UserService(Service[UserRepository]):
         user_id: Optional[int] = None,
         email: Optional[str] = None,
         phone: Optional[str] = None,
-        ) -> dto.User:
+    ) -> dto.User:
         result = await self.reader.select(user_id, email, phone)
         if not result:
             raise NotFoundError(message="User not found", status_code=404)
@@ -48,9 +48,30 @@ class UserService(Service[UserRepository]):
                 ) from e
 
         if result is None:
-            raise AlreadyExistsError(message="This user already exists", status_code=409)
+            raise AlreadyExistsError(
+                message="This user already exists", status_code=409
+            )
 
         return convert_user_model_to_dto(result)
 
-    async def authenticate(self, query: dto.User) -> dto.User:  # type: ignore[empty-body]
-        ...
+    async def delete_user(
+        self,
+        user_id: Optional[int] = None,
+        email: Optional[str] = None,
+        phone: Optional[str] = None,
+    ) -> dto.User:
+        result = await self.writer.delete(user_id, email, phone)
+        if not result:
+            raise NotFoundError(message="User not found", status_code=404)
+
+        return convert_user_model_to_dto(result)
+
+    async def update_user(
+        self,
+        query: dto.UserUpdate,
+    ) -> dto.User:
+        result = await self.writer.update(query)
+        if not result:
+            raise NotFoundError(message="User not found", status_code=404)
+
+        return convert_user_model_to_dto(result)

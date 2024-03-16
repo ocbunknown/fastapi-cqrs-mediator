@@ -1,16 +1,11 @@
-from typing import Optional
-
-from pydantic import BaseModel
-
 from src.app.common import dto
+from src.app.common.dto.base import DTO
 from src.app.handlers.base import BaseHandler
 from src.app.services.gateway import ServiceGateway
 
 
-class GetUserQuery(BaseModel):
-    user_id: Optional[int] = None
-    phone: Optional[str] = None
-    email: Optional[str] = None
+class GetUserQuery(DTO):
+    user_id: int
 
 
 class GetUserHandler(BaseHandler[GetUserQuery, dto.User]):

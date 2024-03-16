@@ -11,9 +11,11 @@ def build_command_mediator(
 ) -> None:
     dependencies = (
         (dto.UserCreate, commands.CreateUserHandler),
+        (commands.DeleteUser, commands.DeleteUserHandler),
+        (dto.UserUpdate, commands.UpdateUserHandler),
     )
     for q, handler in dependencies:
         mediator.register(
-            q,
+            q,  # type: ignore[arg-type]
             lambda handler=handler: handler(service_gateway_factory(session_factory)),
         )

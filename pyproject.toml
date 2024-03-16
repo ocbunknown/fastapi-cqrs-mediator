@@ -19,6 +19,16 @@ orjson = "^3.9.15"
 passlib = "^1.7.4"
 gunicorn = "^21.2.0"
 types-passlib = "^1.7.7.20240311"
+httpx = "^0.27.0"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "*"
+pytest-asyncio = "*"
+testcontainers = {version = "4.0.1", extras = ["postgresql"]}
+pytest-order = "1.2.0"
 
 [tool.poetry.group.lint]
 optional = true
@@ -26,6 +36,7 @@ optional = true
 [tool.poetry.group.lint.dependencies]
 ruff = "^0.2.1"
 mypy = "^1.8.0"
+black = "24.2.0"
 
 [tool.ruff]
 fix = true
@@ -46,6 +57,7 @@ lint.ignore = [
     "ANN401",
     "TRY003", # Exception error
     "EM101",  # Exception error
+    "PGH003" # type ignore
 ]
 
 [tool.ruff.lint.extend-per-file-ignores]
@@ -53,6 +65,8 @@ lint.ignore = [
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
+testpaths = ["tests"]
+asyncio_mode = "auto"
 
 [build-system]
 requires = ["poetry-core>=1.7"]
