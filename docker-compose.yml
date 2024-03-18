@@ -1,44 +1,105 @@
 version: "3"
 
 services:
-  postgres:
-    image: postgres:latest
-    container_name: database
-    restart: on-failure
+  api:
+    profiles: [ "api" ]
+    container_name: api
+    build:
+      context: .
+    restart: unless-stopped
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - interconnect
+      - postgres.network
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      - ./config:/app/config:ro
     env_file:
       - .env
+    environment:
+      - CONFIG_PATH=${CONFIG_PATH:-./config/prod_config.toml}
+    command: sh -c "make run"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:5000/api/healthcheck/"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+
+  postgres_migration:
+    profiles: [ "migration" ]
+    container_name: postgres_migration
+    build:
+      context: .
+    restart: on-failure
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - interconnect
+      - postgres.network
+    volumes:
+      - ./config:/app/config:ro
+      - ./alembic.ini:/app/alembic.ini:ro
+      - ./migrations:/app/migrations:ro
+    environment:
+      - CONFIG_PATH=${CONFIG_PATH:-./config/prod_config.toml}
+    command: sh -c "make alembic_upgrade"
+
+  postgres:
+    profiles: [ "api", "migration" ]
+    container_name: postgres
+    image: "postgres:15-alpine"
+    hostname: postgres
+    restart: unless-stopped
     ports:
       - '5433:5432'
     networks:
       - interconnect
-
-  service:
-    build: .
-    restart: always
-    container_name: service
+      - postgres.network
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_USER: ${POSTGRES_USER:-$USER}
+      POSTGRES_DB: ${POSTGRES_DB:-$USER}
     volumes:
-      - ./:/app
-    command: sh -c "make alembic_upgrade && make run"
-    ports:
-      - "8000:8000"
-    env_file:
-      - .env
-    depends_on:
-      - postgres
+      - postgres.data:/var/lib/postgresql/users:rw
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+
+  postgres_backup:
+    profiles: [ "api" ]
+    container_name: postgres_backup
+    image: prodrigestivill/postgres-backup-local:15-alpine
     networks:
       - interconnect
+      - postgres.network
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=${POSTGRES_DB:-$USER}
+      - POSTGRES_USER=${POSTGRES_USER:-$USER}
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - BACKUP_DIR=/backups
+      - POSTGRES_EXTRA_OPTS=-Z6 --schema=public --blobs
+      - SCHEDULE=${POSTGRES_BACKUP_SCHEDULE:-@daily}
+      - HEALTHCHECK_PORT=8080
+    volumes:
+      - ${POSTGRES_BACKUP_DIR:-./.backups/postgres}:/backups
   
   nginx:
+   profiles: [ "api" ]
    image: nginx:stable
    container_name: nginx
    depends_on:
-    - service
+    - api
    ports:
     - "3000:80"
    volumes:
@@ -47,9 +108,11 @@ services:
    networks:
      - interconnect
 
+
 volumes:
-  postgres_data:
+  postgres.data: {}
 
 networks:
   interconnect:
     driver: bridge
+  postgres.network: {}
