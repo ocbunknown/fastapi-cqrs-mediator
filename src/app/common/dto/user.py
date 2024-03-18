@@ -23,9 +23,9 @@ class UpdateUser(DTO):
 
 
 class DeleteUser(DTO):
-    user_id: Optional[int] = None
+    id: int
     email: Optional[str] = None
-    phone: Optional[str] = None
+    phone: str
 
 
 class UpdatePartial(DTO):

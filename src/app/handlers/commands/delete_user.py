@@ -17,6 +17,6 @@ class DeleteUserHandler(BaseHandler[DeleteUser, dto.User]):
     def __init__(self, gateway: ServiceGateway) -> None:
         self._gateway = gateway
 
-    async def handle(self, query: DeleteUser) -> dto.User:
+    async def handle(self, query: DeleteUser) -> dto.DeleteUser:
         async with self._gateway:
             return await self._gateway.user().delete_user(**query.model_dump())

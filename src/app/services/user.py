@@ -3,7 +3,10 @@ from typing import Any, Optional
 from sqlalchemy.exc import IntegrityError
 
 from src.app.common import dto
-from src.app.common.converters import convert_user_model_to_dto
+from src.app.common.converters import (
+    convert_user_model_to_delete_user_dto,
+    convert_user_model_to_dto,
+)
 from src.app.common.exceptions import AlreadyExistsError, NotFoundError
 from src.app.common.password import PasswordHelper
 from src.app.database.repositories.user import UserRepository
@@ -59,12 +62,12 @@ class UserService(Service[UserRepository]):
         user_id: Optional[int] = None,
         email: Optional[str] = None,
         phone: Optional[str] = None,
-    ) -> dto.User:
+    ) -> dto.DeleteUser:
         result = await self.writer.delete(user_id, email, phone)
         if not result:
             raise NotFoundError(message="User not found", status_code=404)
 
-        return convert_user_model_to_dto(result)
+        return convert_user_model_to_delete_user_dto(result)
 
     async def update_user(
         self,

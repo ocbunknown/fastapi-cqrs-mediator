@@ -48,7 +48,4 @@ class UserWriter(BaseInteractor[models.User]):
                 self.repository.model.phone == phone
             )
 
-        if not result:
-            return None
-
-        return result[0]
+        return result[0] if result else None

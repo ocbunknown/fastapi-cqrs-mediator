@@ -44,3 +44,7 @@ run: ## Run backend
 	gunicorn -k uvicorn.workers.UvicornWorker \
 	--workers=$(G_WORKERS) --bind "$(G_HOST):$(G_PORT)" \
 	--log-level debug src.app.main:create_app
+
+.PHONY: docker_run
+docker_run: ## Run backend
+	docker compose --profile api --profile migration  up --build

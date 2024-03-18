@@ -2,7 +2,7 @@
 name = "booking"
 version = "0.1.0"
 description = ""
-authors = ["Psychotim <balduev.desco@mail.ru>"]
+authors = ["Psychotim"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
