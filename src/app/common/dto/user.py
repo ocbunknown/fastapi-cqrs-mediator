@@ -10,13 +10,25 @@ class User(DTO):
     hashed_password: str
 
 
-class UserCreate(DTO):
+class CreateUser(DTO):
     email: Optional[str] = None
     phone: str
     hashed_password: str
 
 
-class UserUpdate(DTO):
+class UpdateUser(DTO):
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    hashed_password: Optional[str] = None
+
+
+class DeleteUser(DTO):
+    user_id: Optional[int] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+
+
+class UpdatePartial(DTO):
     id: int
     email: Optional[str] = None
     phone: Optional[str] = None

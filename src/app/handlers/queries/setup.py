@@ -9,7 +9,7 @@ def build_query_mediator(
     session_factory: SessionFactoryType,
 ) -> None:
     dependencies = (
-        (queries.GetUserQuery, queries.GetUserHandler),
+        (queries.GetUser, queries.GetUserHandler),
     )
     for q, handler in dependencies:
         mediator.register(

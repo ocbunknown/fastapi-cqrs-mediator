@@ -1,4 +1,3 @@
-from src.app.common import dto
 from src.app.database.core.connection import SessionFactoryType
 from src.app.handlers import commands
 from src.app.handlers.commands import CommandMediator
@@ -10,9 +9,9 @@ def build_command_mediator(
     session_factory: SessionFactoryType,
 ) -> None:
     dependencies = (
-        (dto.UserCreate, commands.CreateUserHandler),
+        (commands.CreateUser, commands.CreateUserHandler),
         (commands.DeleteUser, commands.DeleteUserHandler),
-        (dto.UserUpdate, commands.UpdateUserHandler),
+        (commands.UpdateUser, commands.UpdateUserHandler),
     )
     for q, handler in dependencies:
         mediator.register(

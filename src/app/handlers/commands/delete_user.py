@@ -1,7 +1,6 @@
 from typing import Optional
 
-from src.app.common import dto
-from src.app.common.dto.base import DTO
+from src.app.common import DTO, dto
 from src.app.handlers.base import BaseHandler
 from src.app.services.gateway import ServiceGateway
 

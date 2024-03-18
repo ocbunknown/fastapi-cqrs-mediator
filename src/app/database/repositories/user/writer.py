@@ -13,12 +13,12 @@ if TYPE_CHECKING:
 class UserWriter(BaseInteractor[models.User]):
     __slots__ = ()
 
-    async def create(self, query: dto.UserCreate) -> Optional[models.User]:
+    async def create(self, query: dto.CreateUser) -> Optional[models.User]:
         return await self.repository.crud.create(**query.model_dump())
 
     async def update(
         self,
-        query: dto.UserUpdate,
+        query: dto.UpdatePartial,
     ) -> Optional[models.User]:
         result = await self.repository.crud.update(
             self.repository.model.id == query.id,
@@ -44,7 +44,9 @@ class UserWriter(BaseInteractor[models.User]):
                 self.repository.model.email == email
             )
         else:
-            result = await self.repository.crud.delete(self.repository.model.phone == phone)
+            result = await self.repository.crud.delete(
+                self.repository.model.phone == phone
+            )
 
         if not result:
             return None

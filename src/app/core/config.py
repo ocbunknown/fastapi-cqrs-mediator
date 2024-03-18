@@ -17,27 +17,26 @@ class DatabaseSettings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=False,
-        env_prefix="DB_",
+        extra="ignore"
     )
 
-    uri: str
-    name: str
-    host: Optional[str] = None
-    port: Optional[int] = None
-    user: Optional[str] = None
-    password: Optional[str] = None
-    echo: Optional[bool] = False
-    future: Optional[bool] = True
-    workers: Optional[int] = 4
+    POSTGRES_URI: str
+    POSTGRES_DB: str
+    POSTGRES_HOST: Optional[str] = None
+    POSTGRES_PORT: Optional[int] = None
+    POSTGRES_USER: Optional[str] = None
+    POSTGRES_PASSWORD: Optional[str] = None
+    ECHO: Optional[bool] = False
+    WORKERS: Optional[int] = 4
 
     @property
     def url(self) -> str:
-        return self.uri.format(
-            self.user,
-            self.password,
-            self.host,
-            self.port,
-            self.name,
+        return self.POSTGRES_URI.format(
+            self.POSTGRES_USER,
+            self.POSTGRES_PASSWORD,
+            self.POSTGRES_HOST,
+            self.POSTGRES_PORT,
+            self.POSTGRES_DB,
         )
 
 class Settings(BaseSettings):

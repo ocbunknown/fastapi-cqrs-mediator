@@ -42,5 +42,5 @@ mypy:
 .PHONY: run
 run: ## Run backend
 	gunicorn -k uvicorn.workers.UvicornWorker \
-	--workers=$(WORKERS) --bind "$(HOST):$(PORT)" \
+	--workers=$(G_WORKERS) --bind "$(G_HOST):$(G_PORT)" \
 	--log-level debug src.app.main:create_app

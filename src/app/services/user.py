@@ -31,7 +31,7 @@ class UserService(Service[UserRepository]):
 
         return convert_user_model_to_dto(result)
 
-    async def create_user(self, query: dto.UserCreate) -> dto.User:
+    async def create_user(self, query: dto.CreateUser) -> dto.User:
         query.hashed_password = self.password_helper.hash(query.hashed_password)
 
         try:
@@ -68,8 +68,11 @@ class UserService(Service[UserRepository]):
 
     async def update_user(
         self,
-        query: dto.UserUpdate,
+        query: dto.UpdatePartial,
     ) -> dto.User:
+        if query.hashed_password is not None:
+            query.hashed_password = self.password_helper.hash(query.hashed_password)
+
         result = await self.writer.update(query)
         if not result:
             raise NotFoundError(message="User not found", status_code=404)
