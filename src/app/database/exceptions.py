@@ -1,23 +1,18 @@
-from typing import Any
+from src.app.common.exceptions import ApplicationException
 
 
-class DatabaseError(Exception):
+class UnexpectedError(ApplicationException):
     pass
 
 
-class CommitError(DatabaseError):
+class CommitError(UnexpectedError):
     pass
 
 
-class RollbackError(DatabaseError):
+class RollbackError(UnexpectedError):
     pass
 
 
-class InvalidParamsError(Exception):
-    def __init__(
-        self,
-        message: Any,
-        **kwargs: Any,
-    ) -> None:
-        self.__dict__.update(kwargs)
-        Exception.__init__(message)
+class RepoError(UnexpectedError):
+    pass
+

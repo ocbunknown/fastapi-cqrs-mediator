@@ -11,7 +11,7 @@ class DeleteUser(DTO):
     phone: Optional[str] = None
 
 
-class DeleteUserHandler(BaseHandler[DeleteUser, dto.User]):
+class DeleteUserHandler(BaseHandler[DeleteUser, dto.DeleteUser]):
     __slots__ = ("_gateway",)
 
     def __init__(self, gateway: ServiceGateway) -> None:

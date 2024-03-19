@@ -8,6 +8,7 @@ from src.app.common.converters import (
     convert_user_model_to_dto,
 )
 from src.app.common.exceptions import AlreadyExistsError, NotFoundError
+from src.app.common.exceptions.service import InvalidParamsError
 from src.app.common.password import PasswordHelper
 from src.app.database.repositories.user import UserRepository
 from src.app.services import Service
@@ -28,9 +29,12 @@ class UserService(Service[UserRepository]):
         email: Optional[str] = None,
         phone: Optional[str] = None,
     ) -> dto.User:
+        if not any([user_id, email, phone]):
+            raise InvalidParamsError
+
         result = await self.reader.select(user_id, email, phone)
         if not result:
-            raise NotFoundError(message="User not found", status_code=404)
+            raise NotFoundError(user_id=user_id)
 
         return convert_user_model_to_dto(result)
 
@@ -42,18 +46,12 @@ class UserService(Service[UserRepository]):
         except IntegrityError as e:
             error_info = str(e.orig)
             if "email" in error_info:
-                raise AlreadyExistsError(
-                    message="This email already in use", status_code=409
-                ) from e
+                raise AlreadyExistsError(message=f"Email: {query.email} already in use") from e
             if "phone" in error_info:
-                raise AlreadyExistsError(
-                    message="This phone already in use", status_code=409
-                ) from e
+                raise AlreadyExistsError(message=f"Phone: {query.phone} already in use") from e
 
         if result is None:
-            raise AlreadyExistsError(
-                message="This user already exists", status_code=409
-            )
+            raise AlreadyExistsError
 
         return convert_user_model_to_dto(result)
 
@@ -63,9 +61,12 @@ class UserService(Service[UserRepository]):
         email: Optional[str] = None,
         phone: Optional[str] = None,
     ) -> dto.DeleteUser:
+        if not any([user_id, email, phone]):
+            raise InvalidParamsError
+
         result = await self.writer.delete(user_id, email, phone)
         if not result:
-            raise NotFoundError(message="User not found", status_code=404)
+            raise NotFoundError(user_id=user_id)
 
         return convert_user_model_to_delete_user_dto(result)
 
@@ -78,6 +79,6 @@ class UserService(Service[UserRepository]):
 
         result = await self.writer.update(query)
         if not result:
-            raise NotFoundError(message="User not found", status_code=404)
+            raise NotFoundError(user_id=query.id)
 
         return convert_user_model_to_dto(result)

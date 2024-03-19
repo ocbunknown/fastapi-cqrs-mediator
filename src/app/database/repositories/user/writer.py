@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from src.app.database import models
-from src.app.database.exceptions import InvalidParamsError
 from src.app.database.repositories.base import BaseInteractor
 
 if TYPE_CHECKING:
@@ -32,9 +31,6 @@ class UserWriter(BaseInteractor[models.User]):
         email: Optional[str] = None,
         phone: Optional[str] = None,
     ) -> Optional[models.User]:
-        if not any([user_id, email, phone]):
-            raise InvalidParamsError("At least 1 parameter must be provided")
-
         if user_id:
             result = await self.repository.crud.delete(
                 self.repository.model.id == user_id

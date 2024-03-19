@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Optional, Sequence
 
 from src.app.database import models
-from src.app.database.exceptions import InvalidParamsError
 from src.app.database.repositories.base import BaseInteractor
 
 
@@ -16,9 +15,6 @@ class UserReader(BaseInteractor[models.User]):
         email: Optional[str] = None,
         phone: Optional[str] = None,
     ) -> Optional[models.User]:
-        if not any([user_id, email, phone]):
-            raise InvalidParamsError("At least 1 parameter must be provided")
-
         if user_id:
             return await self.repository.crud.select(
                 self.repository.model.id == user_id
