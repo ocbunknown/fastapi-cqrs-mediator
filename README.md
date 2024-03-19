@@ -80,4 +80,4 @@ curl -X 'DELETE' \
 ### TODO
 
 - [ ] Write tests
-- [X] Add Exceptions handlers
+- [X] Add Exception handlers
