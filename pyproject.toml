@@ -20,7 +20,6 @@ passlib = "^1.7.4"
 gunicorn = "^21.2.0"
 types-passlib = "^1.7.7.20240311"
 httpx = "^0.27.0"
-structlog = "^24.1.0"
 uuid6 = "^2024.1.12"
 
 [tool.poetry.group.test]
@@ -29,8 +28,6 @@ optional = true
 [tool.poetry.group.test.dependencies]
 pytest = "*"
 pytest-asyncio = "*"
-testcontainers = { version = "4.0.1", extras = ["postgresql"] }
-pytest-order = "1.2.0"
 
 [tool.poetry.group.lint]
 optional = true
