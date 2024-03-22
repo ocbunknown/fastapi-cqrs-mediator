@@ -20,4 +20,4 @@ class UpdateUserHandler(BaseHandler[UpdateUser, dto.User]):
 
     async def handle(self, query: UpdateUser) -> dto.User:
         async with self._gateway:
-            return await self._gateway.user().update_user(query) #type: ignore[arg-type]
+            return await self._gateway.user().update_user(query)  # type: ignore[arg-type]

@@ -9,7 +9,7 @@ from src.app.common.converters import (
 )
 from src.app.common.exceptions import AlreadyExistsError, NotFoundError
 from src.app.common.exceptions.service import InvalidParamsError
-from src.app.common.password import PasswordHelper
+from src.app.common.password import bcrypt_hash
 from src.app.database.repositories.user import UserRepository
 from src.app.services import Service
 
@@ -21,7 +21,6 @@ class UserService(Service[UserRepository]):
         super().__init__(repository, **kwargs)
         self.reader = repository.reader()
         self.writer = repository.writer()
-        self.password_helper = PasswordHelper()
 
     async def select_user(
         self,
@@ -39,16 +38,20 @@ class UserService(Service[UserRepository]):
         return convert_user_model_to_dto(result)
 
     async def create_user(self, query: dto.CreateUser) -> dto.User:
-        query.hashed_password = self.password_helper.hash(query.hashed_password)
+        query.hashed_password = bcrypt_hash(query.hashed_password)
 
         try:
             result = await self.writer.create(query)
         except IntegrityError as e:
             error_info = str(e.orig)
             if "email" in error_info:
-                raise AlreadyExistsError(message=f"Email: {query.email} already in use") from e
+                raise AlreadyExistsError(
+                    message=f"Email: {query.email} already in use"
+                ) from e
             if "phone" in error_info:
-                raise AlreadyExistsError(message=f"Phone: {query.phone} already in use") from e
+                raise AlreadyExistsError(
+                    message=f"Phone: {query.phone} already in use"
+                ) from e
 
         if result is None:
             raise AlreadyExistsError
@@ -75,7 +78,7 @@ class UserService(Service[UserRepository]):
         query: dto.UpdatePartial,
     ) -> dto.User:
         if query.hashed_password is not None:
-            query.hashed_password = self.password_helper.hash(query.hashed_password)
+            query.hashed_password = bcrypt_hash(query.hashed_password)
 
         result = await self.writer.update(query)
         if not result:

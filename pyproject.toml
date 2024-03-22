@@ -20,6 +20,8 @@ passlib = "^1.7.4"
 gunicorn = "^21.2.0"
 types-passlib = "^1.7.7.20240311"
 httpx = "^0.27.0"
+structlog = "^24.1.0"
+uuid6 = "^2024.1.12"
 
 [tool.poetry.group.test]
 optional = true
@@ -27,7 +29,7 @@ optional = true
 [tool.poetry.group.test.dependencies]
 pytest = "*"
 pytest-asyncio = "*"
-testcontainers = {version = "4.0.1", extras = ["postgresql"]}
+testcontainers = { version = "4.0.1", extras = ["postgresql"] }
 pytest-order = "1.2.0"
 
 [tool.poetry.group.lint]
@@ -57,7 +59,7 @@ lint.ignore = [
     "ANN401",
     "TRY003", # Exception error
     "EM101",  # Exception error
-    "PGH003" # type ignore
+    "PGH003", # type ignore
 ]
 
 [tool.ruff.lint.extend-per-file-ignores]
@@ -67,6 +69,7 @@ lint.ignore = [
 pythonpath = [".", "src"]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+addopts = "-p no:warnings" # Disabling warning capture entirely
 
 [build-system]
 requires = ["poetry-core>=1.7"]

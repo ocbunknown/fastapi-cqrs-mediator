@@ -14,10 +14,7 @@ _StrPath: TypeAlias = Union[os.PathLike[str], str, Path]
 
 class DatabaseSettings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
-        extra="ignore"
+        env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore"
     )
 
     POSTGRES_URI: str
@@ -38,6 +35,7 @@ class DatabaseSettings(BaseSettings):
             self.POSTGRES_PORT,
             self.POSTGRES_DB,
         )
+
 
 class Settings(BaseSettings):
     db: DatabaseSettings

@@ -15,9 +15,10 @@ class AlreadyExistsError(ApplicationException):
             return self.message
 
         if self.user_id is not None:
-            return f'A user with the "{self.user_id}" user_id already exists'
+            return f"A user with the '{self.user_id}' user_id already exists"
 
-        return "A user with this user_id already exists"
+        return "User already exists"
+
 
 @dataclass(eq=False)
 class NotFoundError(ApplicationException):
@@ -30,7 +31,7 @@ class NotFoundError(ApplicationException):
             return self.message
 
         if self.user_id is not None:
-            return f'A user with the id "{self.user_id}" not found'
+            return f"A user with the id '{self.user_id}' not found"
 
         return "User not found"
 

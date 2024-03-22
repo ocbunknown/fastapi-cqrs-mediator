@@ -14,5 +14,5 @@ class GetUserHandler(BaseHandler[GetUser, dto.User]):
         self._gateway = gateway
 
     async def handle(self, query: GetUser) -> dto.User:
-        async with self._gateway.db_gateway.uow.session:
+        async with self._gateway:
             return await self._gateway.user().select_user(**query.model_dump())

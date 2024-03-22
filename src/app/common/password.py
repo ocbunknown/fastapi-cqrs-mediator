@@ -1,25 +1,15 @@
-from typing import Optional
+from typing import Final
 
-from passlib import pwd
 from passlib.context import CryptContext
 
-from src.app.common.interfaces.password import PasswordHelperProtocol
+_crypto: Final[CryptContext] = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-class PasswordHelper(PasswordHelperProtocol):
-    def __init__(self, context: Optional[CryptContext] = None) -> None:
-        if context is None:
-            self.context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-        else:
-            self.context = context
+def verify_password(
+    plain_password: str, hashed_password: str
+) -> tuple[bool, str | None]:
+    return _crypto.verify_and_update(plain_password, hashed_password)
 
-    def verify_and_update(
-        self, plain_password: str, hashed_password: str
-    ) -> tuple[bool, str]:
-        return self.context.verify_and_update(plain_password, hashed_password)  # type: ignore
 
-    def hash(self, password: str) -> str:
-        return self.context.hash(password)
-
-    def generate(self) -> str:
-        return pwd.genword()  # type: ignore
+def bcrypt_hash(password: str) -> str:
+    return _crypto.hash(password)

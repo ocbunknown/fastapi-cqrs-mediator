@@ -46,5 +46,5 @@ run: ## Run backend
 	--log-level debug src.app.main:create_app
 
 .PHONY: docker_run
-docker_run: ## Run backend
+docker_run: ## Run docker_backend
 	docker compose --profile api --profile migration  up --build

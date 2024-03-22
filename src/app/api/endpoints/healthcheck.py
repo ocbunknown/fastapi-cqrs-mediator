@@ -12,10 +12,6 @@ class OkStatus(DTO):
     status: str = "ok"
 
 
-@healthcheck_router.get(
-    "/",
-    response_model=OkStatus,
-    status_code=status.HTTP_200_OK
-)
+@healthcheck_router.get("/", response_model=OkStatus, status_code=status.HTTP_200_OK)
 async def get_status() -> OkStatus:
     return OkStatus()
