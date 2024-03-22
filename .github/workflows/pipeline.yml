@@ -39,7 +39,7 @@ jobs:
       - name: Lint with ruff & mypy
         run: |
           poetry run mypy . --explicit-package-bases 
-          poetry ruff format
+          poetry run ruff format
   test:
     needs: build
     runs-on: ubuntu-latest
