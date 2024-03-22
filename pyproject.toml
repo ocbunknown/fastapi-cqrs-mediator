@@ -29,7 +29,7 @@ optional = true
 [tool.poetry.group.test.dependencies]
 pytest = "*"
 pytest-asyncio = "*"
-testcontainers = { version = "4.0.1", extras = ["postgresql"] }
+testcontainers = { version = "4.1.1", extras = ["postgresql"] }
 pytest-order = "1.2.0"
 
 [tool.poetry.group.lint]
