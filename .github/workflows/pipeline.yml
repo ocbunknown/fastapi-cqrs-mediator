@@ -22,7 +22,7 @@ jobs:
           cache: "poetry"
           cache-dependency-path: poetry.lock
       - name: Install dependencies
-        run: poetry install --with lint, test
+        run: poetry install --with lint,test
   lint:
     needs: build
     runs-on: ubuntu-latest
