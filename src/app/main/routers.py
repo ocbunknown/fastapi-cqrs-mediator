@@ -1,7 +1,7 @@
 from fastapi import APIRouter, FastAPI
 
-from src.app.api.endpoints.healthcheck import healthcheck_router
-from src.app.api.endpoints.user import user_router
+from src.app.api.endpoints.v1.healthcheck import healthcheck_router
+from src.app.api.endpoints.v1.user import user_router
 
 
 def init_routers(app: FastAPI) -> None:
