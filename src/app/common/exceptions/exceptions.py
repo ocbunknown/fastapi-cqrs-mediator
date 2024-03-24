@@ -12,7 +12,6 @@ class AppException(Exception):
 
 
 class ApplicationException(AppException):
-
     @property
     def title(self) -> str:
         return "An application error occurred"
