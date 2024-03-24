@@ -1,11 +1,13 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import ClassVar, Optional
 
 from src.app.common.exceptions import ApplicationException
 
 
 @dataclass(eq=False)
 class AlreadyExistsError(ApplicationException):
+    status: ClassVar[int] = 409
+
     user_id: Optional[int] = None
     message: Optional[str] = None
 
@@ -22,6 +24,8 @@ class AlreadyExistsError(ApplicationException):
 
 @dataclass(eq=False)
 class NotFoundError(ApplicationException):
+    status: ClassVar[int] = 404
+
     user_id: Optional[int] = None
     message: Optional[str] = None
 
@@ -37,6 +41,8 @@ class NotFoundError(ApplicationException):
 
 
 class InvalidParamsError(ApplicationException):
+    status: ClassVar[int] = 400
+
     @property
     def title(self) -> str:
         return "At least 1 parameter must be provided"

@@ -12,12 +12,15 @@ class AppException(Exception):
 
 
 class ApplicationException(AppException):
+
     @property
     def title(self) -> str:
         return "An application error occurred"
 
 
 class NotFoundError(ApplicationException):
+    status: ClassVar[int] = 404
+
     @property
     def title(self) -> str:
         return "An application error occurred"

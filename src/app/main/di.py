@@ -21,7 +21,7 @@ def singleton(dependency: DependencyType) -> Callable[[], DependencyType]:
 
 def init_dependencies(app: FastAPI) -> None:
     settings = load_settings()
-    engine = create_sa_engine(settings.db.url)
+    engine = create_sa_engine(settings.url)
     session_factory = create_sa_session_factory(engine)
 
     query_mediator = QueryMediator()
