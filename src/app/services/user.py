@@ -53,7 +53,7 @@ class UserService(Service[UserRepository]):
                     message=f"Phone: {query.phone} already in use"
                 ) from e
 
-        if result is None:
+        if not result:
             raise AlreadyExistsError
 
         return convert_user_model_to_dto(result)
@@ -77,10 +77,10 @@ class UserService(Service[UserRepository]):
         self,
         query: dto.UpdatePartial,
     ) -> dto.User:
-        if query.hashed_password is not None:
+        if query.hashed_password:
             query.hashed_password = bcrypt_hash(query.hashed_password)
 
-        result = await self.writer.update(query)
+        result = await self.writer.update(**query.model_dump())
         if not result:
             raise NotFoundError(user_id=query.id)
 

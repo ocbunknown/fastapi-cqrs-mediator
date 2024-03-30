@@ -11,8 +11,8 @@ class DatabaseSettings(BaseSettings):
         extra="ignore",
     )
 
-    POSTGRES_URI: Optional[str] = None
-    POSTGRES_DB: Optional[str] = None
+    POSTGRES_URI: str
+    POSTGRES_DB: str
     POSTGRES_HOST: Optional[str] = None
     POSTGRES_PORT: Optional[int] = None
     POSTGRES_USER: Optional[str] = None
@@ -30,4 +30,4 @@ class DatabaseSettings(BaseSettings):
 
 
 def load_settings() -> DatabaseSettings:
-    return DatabaseSettings()
+    return DatabaseSettings()  # type: ignore

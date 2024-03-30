@@ -16,15 +16,19 @@ class UserReader(BaseInteractor[models.User]):
         phone: Optional[str] = None,
     ) -> Optional[models.User]:
         if user_id:
-            return await self.repository.crud.select(
+            result = await self.repository.crud.select(
                 self.repository.model.id == user_id
             )
         if email:
-            return await self.repository.crud.select(
+            result = await self.repository.crud.select(
                 self.repository.model.email == email
             )
+        if phone:
+            result = await self.repository.crud.select(
+                self.repository.model.phone == phone
+            )
 
-        return await self.repository.crud.select(self.repository.model.phone == phone)
+        return result if result else None
 
     async def select_many(
         self, limit: Optional[int] = None, offset: Optional[int] = None

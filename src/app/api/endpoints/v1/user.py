@@ -12,11 +12,11 @@ from src.app.handlers.commands import (
 )
 from src.app.handlers.queries import GetUser, QueryMediator
 
-user_router = APIRouter(prefix="/v1/users", tags=["User"])
+user_router = APIRouter(prefix="/users", tags=["User"])
 
 
 @user_router.post(
-    "/",
+    "",
     status_code=status.HTTP_200_OK,
     response_model=dto.User,
 )
