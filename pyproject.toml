@@ -35,7 +35,7 @@ optional = true
 [tool.poetry.group.lint.dependencies]
 ruff = "^0.3.4"
 mypy = "^1.8.0"
-black = "24.3.0"
+black = "24.4.1"
 
 [tool.ruff]
 fix = true
